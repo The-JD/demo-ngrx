@@ -1,0 +1,10 @@
+<small>Shopping Cart</small>
+
+<small> Cart Items
+<ul>
+    <li *ngFor="let item of cartStore.cartItems()">
+        {{ getProductName(item.productId) }} x {{ item.quantity }}
+    </li>
+</ul>
+</small>
+<h4> Total Price: Rs. {{ prodStore.totalPrice() }} </h4>

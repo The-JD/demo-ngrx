@@ -1,37 +1,36 @@
-import { NgModule, isDevMode } from '@angular/core';
+import { APP_INITIALIZER, NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 
-import { StoreModule } from '@ngrx/store';
-import { counterReducer } from './store/counter.reducer';
-import { CounterComponent } from './components/counter/counter.component';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { reducers } from './store/reducers';
-import { StudentModule } from './modules/student/student.module';
-import { StaffsModule } from './modules/staffs/staffs.module';
-import { StudentComponent } from './modules/student/components/student.component';
-import { StaffsComponent } from './modules/staffs/components/staffs.component';
+import { Store, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { SigsProductsComponent } from './modules/signals/components/sig-store/sigs-products/sigs-products.component';
+import { SigsCartComponent } from './modules/signals/components/sig-store/sigs-cart/sigs-cart.component';
+import { SigsOrdersComponent } from './modules/signals/components/sig-store/sigs-orders/sigs-orders.component';
+import { SigsCartStore } from './modules/signals/components/sig-store/sigs-cart/sigs-cart.store';
+import { SigsProductStore } from './modules/signals/components/sig-store/sigs-products/sigs-product.store';
+import { SigsOrderStore } from './modules/signals/components/sig-store/sigs-orders/sigs-orders.store';
+// import { restoreState } from './modules/signals/util/state-persistence.utils';
 
 @NgModule({
   imports: [
     BrowserModule,
-    StudentModule,
-    StaffsModule,
     EffectsModule.forRoot([]),
-    // StoreModule.forRoot({ count: counterReducer }),
-    StoreModule.forRoot(reducers),
-    StoreDevtoolsModule.instrument({
-      maxAge: 25, // Retains last 25 states
-      logOnly: !isDevMode(), // Restrict extension to log-only mode
-    }),
+    StoreModule.forRoot(),
+    SigsProductsComponent,
+    SigsCartComponent,
+    SigsOrdersComponent,
   ],
-  declarations: [AppComponent, CounterComponent, DashboardComponent],
+  declarations: [AppComponent],
   bootstrap: [AppComponent],
+  providers: [
+    SigsCartStore,
+    SigsProductStore,
+    SigsOrderStore
+  ]
 })
-export class AppModule {}
+export class AppModule { }
 
 
 /*
