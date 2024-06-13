@@ -7,20 +7,21 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { SigsCartStore } from '../sigs-cart/sigs-cart.store';
 import { SigsOrderStore } from '../sigs-orders/sigs-orders.store';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-sigs-products',
   standalone: true,
-  imports: [InfiniteScrollModule, CommonModule, HttpClientModule],
+  imports: [InfiniteScrollModule, CommonModule, HttpClientModule, FormsModule],
   templateUrl: './sigs-products.component.html',
   styleUrl: './sigs-products.component.css',
-  // providers: [SigsProductStore, SigsCartStore]
 })
 export class SigsProductsComponent implements OnInit {
 
   productStore = inject(SigsProductStore);
   cartStore = inject(SigsCartStore);
   orderStore = inject(SigsOrderStore);
+  filterValue?: string;
 
   pageData: { pageSize: number, pageNumber: number } = { pageSize: 10, pageNumber: 1 }
 
@@ -34,19 +35,29 @@ export class SigsProductsComponent implements OnInit {
     this.loadProducts();
   }
 
+  clear() {
+    patchState(this.productStore, { products: []});
+    this.pageData = { pageNumber: 1, pageSize: 10};
+    this.filterValue = undefined;
+    this.loadProducts()
+  }
+
   onScroll() {
     this.pageData.pageNumber = this.pageData.pageNumber + 1;
     this.loadProducts();
+  }
+
+  onFilter(){
+    if (this.filterValue) {
+      this.productStore.updateQuery(this.filterValue);
+    }
   }
 
   loadProducts() {
     const pageNumber = this.pageData.pageNumber;
     const pageSize = this.pageData.pageSize;
 
-    this.productService.fetchProductsList(pageNumber, pageSize).subscribe(data => {
-      const updatedList = [...this.productStore.products(), ...data];
-      patchState(this.productStore, { products: updatedList });
-    })
+    this.productService.fetchProductsList(pageNumber, pageSize);
   }
 
   addToCart(productId: number, quantity: number = 1) {

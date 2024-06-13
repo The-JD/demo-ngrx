@@ -1,10 +1,8 @@
 
-import { signalStore, withHooks, withState } from '@ngrx/signals';
+import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
 import { SigsProductModel } from './sigs-products.model';
-import { Injectable } from '@angular/core';
 import { withDevtools, withStorageSync } from '@angular-architects/ngrx-toolkit';
-import { createSelector } from '@ngrx/store';
-import { SigsCartStore } from '../sigs-cart/sigs-cart.store';
+import { filter } from 'rxjs';
 
 type SigsProductState = { products: SigsProductModel[], cartList: SigsProductModel[], totalPrice: number };
 
@@ -19,12 +17,11 @@ export const SigsProductStore = signalStore(
     withDevtools('products'),
     withState(initialSigsProductState),
     withStorageSync('sigsProductState'),
-    withHooks({
-        onInit() {
-            console.log('sp init')
-        },
-        onDestroy() {
-            console.log('sp destroy')
+    withMethods((store) => ({
+        updateQuery(query: string): void {
+            const filterd = store.products().filter(x => x.name.includes(query))
+            console.log('filterd: ', filterd)
+            patchState(store, (state) => ({ products: filterd }));
         }
-    })
+    }))
 );

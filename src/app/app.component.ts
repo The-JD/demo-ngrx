@@ -1,4 +1,6 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
+import { SigsSharedStore } from './modules/signals/components/sig-store/sigs-shared/sigs-shared.store';
+import { patchState } from '@ngrx/signals';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +9,21 @@ import { Component, HostListener } from '@angular/core';
 })
 export class AppComponent {
 
-  clearLocalStore(){
+  sharedStore = inject(SigsSharedStore);
+
+  toggleLoader() {
+    patchState(this.sharedStore, { isLoading: !this.sharedStore.isLoading() })
+  }
+
+  onError() {
+    patchState(this.sharedStore, { error: [{ title: 'Error Title', code: 200, message: 'Error Message' }] })
+  }
+
+  clear() {
+    patchState(this.sharedStore, { error: [] })
+  }
+
+  clearLocalStore() {
     localStorage.removeItem('sigsOrderState');
     localStorage.removeItem('sigsCartState');
     localStorage.removeItem('sigsProductState');

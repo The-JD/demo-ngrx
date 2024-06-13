@@ -1,8 +1,25 @@
-<h1> NgRx - Signals - Signals Store </h1>
+<h1> NgRx Signals Store </h1>
+
 
 <div class="row" style="padding: 10px;">
-    <button (click)="clearLocalStore()">Logout</button>
+    <div class="Column">
+        <button (click)="clearLocalStore()">Clear Local Storage</button>
+        <button (click)="toggleLoader()"> Loader Toggle</button>
+        <button (click)="onError()"> Error</button>
+        <button (click)="clear()"> Clear</button>
+    </div>
+    <div class="Column">
+        <div *ngIf="sharedStore.isLoading()" class="loader-line"></div>
+        <div *ngIf="sharedStore.error().length > 0">
+            <ul>
+                <li style="color: red;" *ngFor="let error of sharedStore.error()">
+                    {{ error.title }} x {{ error.message }}
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>
+
 
 <div class="row" style="padding: 10px;">
     <!-- NEW -->

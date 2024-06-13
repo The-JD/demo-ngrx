@@ -11,6 +11,8 @@ import { SigsOrdersComponent } from './modules/signals/components/sig-store/sigs
 import { SigsCartStore } from './modules/signals/components/sig-store/sigs-cart/sigs-cart.store';
 import { SigsProductStore } from './modules/signals/components/sig-store/sigs-products/sigs-product.store';
 import { SigsOrderStore } from './modules/signals/components/sig-store/sigs-orders/sigs-orders.store';
+import { FormsModule } from '@angular/forms';
+import { SigsSharedStore } from './modules/signals/components/sig-store/sigs-shared/sigs-shared.store';
 // import { restoreState } from './modules/signals/util/state-persistence.utils';
 
 @NgModule({
@@ -21,13 +23,15 @@ import { SigsOrderStore } from './modules/signals/components/sig-store/sigs-orde
     SigsProductsComponent,
     SigsCartComponent,
     SigsOrdersComponent,
+    FormsModule
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent],
   providers: [
     SigsCartStore,
     SigsProductStore,
-    SigsOrderStore
+    SigsOrderStore,
+    SigsSharedStore
   ]
 })
 export class AppModule { }

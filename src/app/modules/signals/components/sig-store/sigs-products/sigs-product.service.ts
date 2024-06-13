@@ -20,15 +20,15 @@ export class SigsProductService {
 
     constructor(private httpClient: HttpClient) { }
 
-    fetchProductsList(pageNumber: number, pageSize: number): Observable<any[]> {
-
+    fetchProductsList(pageNumber: number, pageSize: number) {
         // return this.httpClient.get<any[]>(this.dataUrl).pipe(
         //     map(data => {
         const products = dummyProducts;
         const startIndex = (pageNumber - 1) * pageSize;
         const endIndex = startIndex + pageSize;
-        
-        return of(products.slice(startIndex, endIndex))
+        const prods = (products.slice(startIndex, endIndex));
+        const updatedList = [...this.productStore.products(), ...prods];
+        patchState(this.productStore, { products: updatedList });
         // }
         // ))
     }
