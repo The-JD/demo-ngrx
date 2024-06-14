@@ -16,7 +16,7 @@ export const SigsProductStore = signalStore(
     { providedIn: 'root' },
     withDevtools('products'),
     withState(initialSigsProductState),
-    withStorageSync('sigsProductState'),
+    // withStorageSync('sigsProductState'),
     withMethods((store) => ({
         updateQuery(query: string): void {
             const filterd = store.products().filter(x => x.name.includes(query))
